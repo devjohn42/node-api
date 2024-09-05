@@ -1,4 +1,4 @@
-import { UserModel } from 'server/database/models/users'
+import { UserModel } from '../database/models/users'
 
 // GET Methods
 
@@ -8,11 +8,11 @@ export const getUserByEmail = (email: string) => {
   return UserModel.findOne({ email })
 }
 
+export const getUserById = (id: string) => UserModel.findById(id)
+
 export const getUserBySessionToken = (sessionToken: string) => {
   return UserModel.findOne({ 'authentication.sessionToken': sessionToken })
 }
-
-export const getUserById = (id: string) => UserModel.findById(id)
 
 // POST Method
 
