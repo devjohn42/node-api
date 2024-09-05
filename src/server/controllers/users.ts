@@ -1,32 +1,13 @@
-import { UserModel } from '../database/models/users'
+import { Request, Response } from 'express'
+import { getUsers } from '../database/providers/users'
 
-// GET Methods
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await getUsers()
 
-export const getUsers = () => UserModel.find()
-
-export const getUserByEmail = (email: string) => {
-  return UserModel.findOne({ email })
-}
-
-export const getUserById = (id: string) => UserModel.findById(id)
-
-export const getUserBySessionToken = (sessionToken: string) => {
-  return UserModel.findOne({ 'authentication.sessionToken': sessionToken })
-}
-
-// POST Method
-
-export const createUser = (values: Record<string, any>) => {
-  return new UserModel(values).save().then((user) => user.toObject)
-}
-
-// UPDATE/PATCH Method
-
-export const updateUserById = (id: string, values: Record<string, any>) => {
-  return UserModel.findByIdAndUpdate(id, values)
-}
-// DELETE Method
-
-export const deleteUserById = (id: string) => {
-  return UserModel.findByIdAndDelete({ _id: id })
+    return res.status(200).json(users)
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
 }
